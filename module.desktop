@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Link
+Name=APP_NAME
+Comment=APP_NAME module
+Icon=e-module-APP_NAME
+X-Enlightenment-ModuleType=system
