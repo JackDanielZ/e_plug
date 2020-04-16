@@ -108,7 +108,7 @@ _button_cb_mouse_down(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNU
        inst->popup = e_gadcon_popup_new(inst->gcc, 0);
 
        o = elm_plug_add(e_comp->elm);
-       if (!elm_plug_connect(o, "efl/plugs/" APP_NAME, 0, EINA_FALSE))
+       if (!elm_plug_connect(o, "/ezplug/" APP_NAME, 0, EINA_FALSE))
        {
          efl_del(o);
          o = _label_create(e_comp->elm, "Unable to connect to Window socket " APP_NAME, NULL);
