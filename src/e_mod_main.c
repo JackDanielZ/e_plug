@@ -94,6 +94,16 @@ _popup_comp_del_cb(void *data, Evas_Object *obj EINA_UNUSED)
 }
 
 static void
+cb_plug_resized(void *data EINA_UNUSED,
+                Evas_Object *obj,
+                void *event_info)
+{
+   Evas_Coord_Size *size = event_info;
+   evas_object_size_hint_min_set(obj, size->w, size->h);
+   evas_object_resize(obj, size->w, size->h);
+}
+
+static void
 _button_cb_mouse_down(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNUSED, void *event_info)
 {
    Evas_Event_Mouse_Down *ev = event_info;
@@ -108,15 +118,14 @@ _button_cb_mouse_down(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNU
        inst->popup = e_gadcon_popup_new(inst->gcc, 0);
 
        o = elm_plug_add(e_comp->elm);
-       if (!elm_plug_connect(o, "/ezplug/" APP_NAME, 0, EINA_FALSE))
+       if (!elm_plug_connect(o, "ezplug@" APP_NAME, 0, EINA_FALSE))
        {
          efl_del(o);
          o = _label_create(e_comp->elm, "Unable to connect to Window socket " APP_NAME, NULL);
        }
        else
        {
-         evas_object_size_hint_min_set(o, 380, 500);
-         evas_object_resize(o, 380, 500);
+         evas_object_smart_callback_add(o, "image,resized", cb_plug_resized, NULL);
        }
 
        evas_object_show(o);
