@@ -22,6 +22,8 @@ typedef struct
    E_Gadcon_Client *gcc;
    E_Gadcon_Popup *popup;
 
+   Ecore_Exe *bin_exe;
+
    Evas_Object *o_icon;
 } Instance;
 
@@ -152,6 +154,9 @@ _gc_init(E_Gadcon *gc, const char *name, const char *id, const char *style)
    gcc->data = inst;
    inst->gcc = gcc;
 
+   inst->bin_exe = ecore_exe_pipe_run(BIN_CMD, ECORE_EXE_NONE, NULL);
+   efl_wref_add(inst->bin_exe, &(inst->bin_exe));
+
    evas_object_event_callback_add(inst->o_icon, EVAS_CALLBACK_MOUSE_DOWN,
 				  _button_cb_mouse_down, inst);
 
@@ -161,7 +166,9 @@ _gc_init(E_Gadcon *gc, const char *name, const char *id, const char *style)
 static void
 _gc_shutdown(E_Gadcon_Client *gcc)
 {
-   _instance_delete(gcc->data);
+  Instance *inst = gcc->data;
+  if (inst->bin_exe) ecore_exe_kill(inst->bin_exe);
+   _instance_delete(inst);
 }
 
 static void
